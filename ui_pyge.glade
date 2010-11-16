@@ -127,6 +127,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Insert Background</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_background_menu_item_activate"/>
                       </object>
                     </child>
                   </object>

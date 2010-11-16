@@ -23,9 +23,30 @@ class PyGE:
     def main(self):
         self.window.show()
         gtk.main()
-        
+    
+    # Called when the user clicks the 'Insert Backgroud' menu item.
+    def on_background_menu_item_activate(self, menuitem, data=None):
+        filename = self.get_open_filename()
+    
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
+    
+    # We call get_open_filename() when we want to get a filename to open from the
+    # user. It will present the user with a file chooser dialog and return the 
+    # filename or None. 
+    def get_open_filename(self):
+        filename = None
+        chooser = gtk.FileChooserDialog("Open File...", self.window,
+                                        gtk.FILE_CHOOSER_ACTION_OPEN,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+        
+        chooser.destroy()
+        
+        return filename
         
     # We call error_message() any time we want to display an error message to 
     # the user. It will both show an error dialog and log the error to the 
