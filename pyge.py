@@ -20,6 +20,7 @@ class PyGE:
         
         # initializing some variables
         self.background = None
+        self.background_path = None
         self.filename = None
         
         # connect signals
@@ -40,15 +41,18 @@ class PyGE:
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         
-        # If there is already a background, it needs to be destroyedt 
-        if self.background:
-            self.background.destroy()
-        
-        self.background = gtk.Image()
-        self.background.set_from_file(filename)
-        
-        self.viewport.add(self.background)
-        self.background.show()
+        # If there is already a background, it needs to be destroyed
+        if filename:
+            if self.background:
+                self.background.destroy()
+            
+            self.background = gtk.Image()
+            self.background.set_from_file(filename)
+            
+            self.viewport.add(self.background)
+            self.background.show()
+            
+            self.background_path = filename
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
@@ -87,6 +91,19 @@ class PyGE:
         chooser.destroy()
         
         return filename
+    
+    # writing the xml file describing the scene
+    def write_file(self, filename):
+        while gtk.events_pending():
+            gtk.main_iteration()
+        
+        try:
+            text = "<?xml version='1.0'?>"
+            text += "<scene>"
+            text += "<background"
+            text += "</scene>"
+        except:
+            pass
     
     # We call error_message() any time we want to display an error message to 
     # the user. It will both show an error dialog and log the error to the 
