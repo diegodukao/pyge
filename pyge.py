@@ -16,6 +16,8 @@ class PyGE:
             
         # get the widgets which will be referenced in callbacks
         self.window = builder.get_object("window")
+        self.scrolled_window = builder.get_object("scrolledwindow")
+        self.viewport = builder.get_object("viewport")        
         
         # connect signals
         builder.connect_signals(self)
@@ -27,6 +29,12 @@ class PyGE:
     # Called when the user clicks the 'Insert Backgroud' menu item.
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
+        
+        bg_image = gtk.Image()
+        bg_image.set_from_file(filename)
+        
+        self.viewport.add(bg_image)
+        bg_image.show()
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
