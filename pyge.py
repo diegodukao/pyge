@@ -18,6 +18,10 @@ class PyGE:
         self.window = builder.get_object("window")
         self.viewport = builder.get_object("viewport")
         
+        # initializing some variables
+        self.background = None
+        self.filename = None
+        
         # connect signals
         builder.connect_signals(self)
         
@@ -25,16 +29,20 @@ class PyGE:
         self.window.show()
         gtk.main()
     
+    # Called when the user clicks the 'Save' menu item.
+    def on_save_menu_item_activate(self, menuitem, data=None):
+        if self.filename == None:
+            filename = self.get_save_filename()
+            #if filename:
+            #    self.write_file(filename)
+    
     # Called when the user clicks the 'Insert Backgroud' menu item.
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         
-        # If there is already a background, it needs to be destroyed
-        try:
-            if self.background:
-                self.background.destroy()
-        except:
-            pass
+        # If there is already a background, it needs to be destroyedt 
+        if self.background:
+            self.background.destroy()
         
         self.background = gtk.Image()
         self.background.set_from_file(filename)
@@ -61,7 +69,25 @@ class PyGE:
         chooser.destroy()
         
         return filename
+    
+    # We call get_save_filename() when we want to get a filename to save from the
+    # user. It will present the user with a file chooser dialog and return the 
+    # filename or None.
+    def get_save_filename(self):
+        filename = None
+        chooser = gtk.FileChooserDialog("Save File...", self.window,
+                                        gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+        
+        chooser.destroy()
+        
+        return filename
+    
     # We call error_message() any time we want to display an error message to 
     # the user. It will both show an error dialog and log the error to the 
     # terminal window.

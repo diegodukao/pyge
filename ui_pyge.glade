@@ -38,11 +38,10 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem3">
-                        <property name="label">gtk-save</property>
+                      <object class="GtkMenuItem" id="menu_item_save">
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="label" translatable="yes">Save</property>
+                        <signal name="activate" handler="on_save_menu_item_activate"/>
                       </object>
                     </child>
                     <child>
