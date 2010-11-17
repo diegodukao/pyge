@@ -34,8 +34,8 @@ class PyGE:
     def on_save_menu_item_activate(self, menuitem, data=None):
         if self.filename == None:
             filename = self.get_save_filename()
-            #if filename:
-            #    self.write_file(filename)
+            if filename:
+                self.write_file(filename)
     
     # Called when the user clicks the 'Insert Backgroud' menu item.
     def on_background_menu_item_activate(self, menuitem, data=None):
@@ -98,12 +98,27 @@ class PyGE:
             gtk.main_iteration()
         
         try:
-            text = "<?xml version='1.0'?>"
-            text += "<scene>"
-            text += "<background"
+            text = "<?xml version='1.0'?>\n"
+            text += "<scene>\n"
+            text += "   <background>" + self.background_path
+            text += "</background>\n"
             text += "</scene>"
+            
+            if filename:
+                file_out = open(filename, "w")
+            else:
+                file_out = open(self.filename, "w")
+            file_out.write(text)
+            file_out.close()
+            
+            if filename:
+                self.filename = filename
         except:
-            pass
+            # error writing file, show message to user
+            if filename:
+                self.error_message("Could not save file: %s" % filename)
+            else:
+                self.error_message("Could not save file: %s" % self.filename)
     
     # We call error_message() any time we want to display an error message to 
     # the user. It will both show an error dialog and log the error to the 
