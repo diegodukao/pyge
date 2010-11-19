@@ -23,6 +23,19 @@ class PyGE:
         self.background_path = None
         self.filename = None
         
+        # creating the drawing area
+        self.area = gtk.DrawingArea()
+        self.area.set_size_request(400, 300)
+        self.pangolayout = self.area.create_pango_layout("")
+        
+        # adding the drawing area to the viewport
+        self.viewport.add(self.area)
+        
+        # making the connections (??)
+        self.area.connect("expose-event", self.area_expose)
+        
+        self.area.show()
+        
         # connect signals
         builder.connect_signals(self)
         
@@ -56,6 +69,44 @@ class PyGE:
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
+    
+    
+    def area_expose(self, area, event):
+        self.style = self.area.get_style()
+        self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
+        self.draw_point(10,10)
+        self.draw_points(110, 10)
+        self.draw_line(210, 10)
+        self.draw_lines(310, 10)
+        return True
+    
+    def draw_point(self, x, y):
+        self.area.window.draw_point(self.gc, x+30, y+30)
+        self.pangolayout.set_text("Point")
+        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
+        return
+
+    def draw_points(self, x, y):
+        points = [(x+10,y+10), (x+10,y), (x+40,y+30),
+                  (x+30,y+10), (x+50,y+10)]
+        self.area.window.draw_points(self.gc, points)
+        self.pangolayout.set_text("Points")
+        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
+        return
+
+    def draw_line(self, x, y):
+        self.area.window.draw_line(self.gc, x+10, y+10, x+20, y+30)
+        self.pangolayout.set_text("Line")
+        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
+        return
+
+    def draw_lines(self, x, y):
+        points = [(x+10,y+10), (x+10,y), (x+40,y+30),
+                  (x+30,y+10), (x+50,y+10)]
+        self.area.window.draw_lines(self.gc, points)
+        self.pangolayout.set_text("Lines")
+        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
+        return
     
     # We call get_open_filename() when we want to get a filename to open from the
     # user. It will present the user with a file chooser dialog and return the 
