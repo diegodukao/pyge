@@ -25,7 +25,7 @@ class PyGE:
         
         # creating the drawing area
         self.area = gtk.DrawingArea()
-        self.area.set_size_request(400, 300)
+        self.area.set_size_request(1000, 1000)
         self.pangolayout = self.area.create_pango_layout("")
         
         # adding the drawing area to the viewport
@@ -76,8 +76,9 @@ class PyGE:
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
         self.draw_point(10,10)
         self.draw_points(110, 10)
+        self.draw_pixmap(215, 0)
         self.draw_line(210, 10)
-        self.draw_lines(310, 10)
+        self.draw_lines(213, 10)
         return True
     
     def draw_point(self, x, y):
@@ -106,6 +107,16 @@ class PyGE:
         self.area.window.draw_lines(self.gc, points)
         self.pangolayout.set_text("Lines")
         self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
+        return
+        
+    def draw_pixmap(self, x, y):
+        pixbuf=gtk.gdk.pixbuf_new_from_file('/home/diego/Pictures/avatar.png')
+        pixmap, mask=pixbuf.render_pixmap_and_mask()
+        
+        self.area.window.draw_drawable(self.gc, pixmap, 0, 0, x+15, y+25,
+                                       -1, -1)
+        self.pangolayout.set_text("Pixmap")
+        self.area.window.draw_layout(self.gc, x+5, y+80, self.pangolayout)
         return
     
     # We call get_open_filename() when we want to get a filename to open from the
