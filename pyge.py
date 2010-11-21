@@ -19,22 +19,9 @@ class PyGE:
         self.viewport = builder.get_object("viewport")
         
         # initializing some variables
-        self.background = None
+        self.drawing_area = None
         self.background_path = None
         self.filename = None
-        
-        # creating the drawing area
-        self.area = gtk.DrawingArea()
-        self.area.set_size_request(1000, 1000)
-        self.pangolayout = self.area.create_pango_layout("")
-        
-        # adding the drawing area to the viewport
-        self.viewport.add(self.area)
-        
-        # making the connections (??)
-        self.area.connect("expose-event", self.area_expose)
-        
-        self.area.show()
         
         # connect signals
         builder.connect_signals(self)
@@ -54,16 +41,26 @@ class PyGE:
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         
-        # If there is already a background, it needs to be destroyed
         if filename:
-            if self.background:
-                self.background.destroy()
+            # If a drawing area already exists, it has to be destroyed
+            if self.drawing_area:
+                self.drawing_area.destroy()
+                
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            self.background_pixmap, mask = pixbuf.render_pixmap_and_mask()
+            width = pixbuf.get_width()
+            height = pixbuf.get_height()
             
-            self.background = gtk.Image()
-            self.background.set_from_file(filename)
+            self.drawing_area = gtk.DrawingArea()
+            self.drawing_area.set_size_request(width, height)
             
-            self.viewport.add(self.background)
-            self.background.show()
+            #adding the drawing area to the viewport
+            self.viewport.add(self.drawing_area)
+            
+            #making the connections (??)
+            self.drawing_area.connect("expose-event", self.drawing_area_expose)
+            
+            self.drawing_area.show()
             
             self.background_path = filename
     
@@ -71,52 +68,16 @@ class PyGE:
         gtk.main_quit()
     
     
-    def area_expose(self, area, event):
-        self.style = self.area.get_style()
+    def drawing_area_expose(self, area, event):
+        self.style = self.drawing_area.get_style()
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
-        self.draw_point(10,10)
-        self.draw_points(110, 10)
-        self.draw_pixmap(215, 0)
-        self.draw_line(210, 10)
-        self.draw_lines(213, 10)
+        self.draw_background(0, 0)
         return True
-    
-    def draw_point(self, x, y):
-        self.area.window.draw_point(self.gc, x+30, y+30)
-        self.pangolayout.set_text("Point")
-        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
-        return
-
-    def draw_points(self, x, y):
-        points = [(x+10,y+10), (x+10,y), (x+40,y+30),
-                  (x+30,y+10), (x+50,y+10)]
-        self.area.window.draw_points(self.gc, points)
-        self.pangolayout.set_text("Points")
-        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
-        return
-
-    def draw_line(self, x, y):
-        self.area.window.draw_line(self.gc, x+10, y+10, x+20, y+30)
-        self.pangolayout.set_text("Line")
-        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
-        return
-
-    def draw_lines(self, x, y):
-        points = [(x+10,y+10), (x+10,y), (x+40,y+30),
-                  (x+30,y+10), (x+50,y+10)]
-        self.area.window.draw_lines(self.gc, points)
-        self.pangolayout.set_text("Lines")
-        self.area.window.draw_layout(self.gc, x+5, y+50, self.pangolayout)
-        return
         
-    def draw_pixmap(self, x, y):
-        pixbuf=gtk.gdk.pixbuf_new_from_file('/home/diego/Pictures/avatar.png')
-        pixmap, mask=pixbuf.render_pixmap_and_mask()
-        
-        self.area.window.draw_drawable(self.gc, pixmap, 0, 0, x+15, y+25,
-                                       -1, -1)
-        self.pangolayout.set_text("Pixmap")
-        self.area.window.draw_layout(self.gc, x+5, y+80, self.pangolayout)
+    def draw_background(self, x, y):
+        self.drawing_area.window.draw_drawable(self.gc,
+                                               self.background_pixmap,
+                                               0, 0, x, y, -1, -1)
         return
     
     # We call get_open_filename() when we want to get a filename to open from the
