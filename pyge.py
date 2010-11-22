@@ -22,6 +22,8 @@ class PyGE:
         self.drawing_area = None
         self.background_path = None
         self.filename = None
+        self.width = None
+        self.height = None
         self.sprites = {}
         
         # connect signals
@@ -49,11 +51,11 @@ class PyGE:
             
             pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
             self.background_pixmap, mask = pixbuf.render_pixmap_and_mask()
-            width = pixbuf.get_width()
-            height = pixbuf.get_height()
+            self.width = pixbuf.get_width()
+            self.height = pixbuf.get_height()
             
             self.drawing_area = gtk.DrawingArea()
-            self.drawing_area.set_size_request(width, height)
+            self.drawing_area.set_size_request(self.width, self.height)
             
             #adding the drawing area to the viewport
             self.viewport.add(self.drawing_area)
@@ -150,7 +152,8 @@ class PyGE:
         
         try:
             text = "<?xml version='1.0'?>\n"
-            text += "<scene>\n"
+            text += "<scene width='" + str(self.width)
+            text += "' height='" + str(self.height) +"'>\n"
             text += "   <background>" + self.background_path
             text += "</background>\n"
             text += "</scene>"
