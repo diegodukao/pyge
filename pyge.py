@@ -22,6 +22,7 @@ class PyGE:
         self.drawing_area = None
         self.background_path = None
         self.filename = None
+        self.sprites = {}
         
         # connect signals
         builder.connect_signals(self)
@@ -37,7 +38,7 @@ class PyGE:
             if filename:
                 self.write_file(filename)
     
-    # Called when the user clicks the 'Insert Backgroud' menu item.
+    # Called when the user clicks the 'Create scene from backgroud' menu item.
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         
@@ -64,6 +65,17 @@ class PyGE:
             
             self.background_path = filename
     
+    def on_sprite_menu_item_activate(self, menuitem, data=None):
+        filename = self.get_open_filename()
+        
+        if filename and self.drawing_area:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            pixmap, mask = pixbuf.render_pixmap_and_mask()
+            
+            image = {'pixmap': pixmap, 'x': 100, 'y': 100}
+            self.sprites['image1'] = image
+            
+            
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
     
@@ -71,14 +83,26 @@ class PyGE:
     def drawing_area_expose(self, area, event):
         self.style = self.drawing_area.get_style()
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
-        self.draw_background(0, 0)
+        self.draw_background()
+        self.draw_sprites()
+        
         return True
         
-    def draw_background(self, x, y):
-        self.drawing_area.window.draw_drawable(self.gc,
-                                               self.background_pixmap,
-                                               0, 0, x, y, -1, -1)
+    def draw_background(self):
+        self.draw_to_drawing_area(self.background_pixmap, 0, 0)
+        
         return
+    
+    def draw_sprites(self):
+        if self.sprites:
+            for k in self.sprites.keys():
+                self.draw_to_drawing_area(self.sprites[k]['pixmap'],
+                                          self.sprites[k]['x'],
+                                          self.sprites[k]['y'])
+    
+    def draw_to_drawing_area(self, pixmap, x, y):
+        self.drawing_area.window.draw_drawable(self.gc, pixmap,
+                                               0, 0, x, y, -1, -1)
     
     # We call get_open_filename() when we want to get a filename to open from the
     # user. It will present the user with a file chooser dialog and return the 

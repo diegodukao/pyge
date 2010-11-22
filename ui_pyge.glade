@@ -124,9 +124,17 @@
                     <child>
                       <object class="GtkMenuItem" id="menu_item_background">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Insert Background</property>
+                        <property name="label" translatable="yes">Create scene from background</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_background_menu_item_activate"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menu_item_sprite">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Insert sprite</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_sprite_menu_item_activate"/>
                       </object>
                     </child>
                   </object>
