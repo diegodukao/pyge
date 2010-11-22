@@ -46,7 +46,7 @@ class PyGE:
             # If a drawing area already exists, it has to be destroyed
             if self.drawing_area:
                 self.drawing_area.destroy()
-                
+            
             pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
             self.background_pixmap, mask = pixbuf.render_pixmap_and_mask()
             width = pixbuf.get_width()
@@ -65,6 +65,7 @@ class PyGE:
             
             self.background_path = filename
     
+    # Called when the user clicks the 'Insert sprite' menu item.
     def on_sprite_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         
@@ -72,6 +73,8 @@ class PyGE:
             pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
             pixmap, mask = pixbuf.render_pixmap_and_mask()
             
+            # Adding the image to the dictionary that contains all
+            # sprites to be drawn
             image = {'pixmap': pixmap, 'x': 100, 'y': 100}
             self.sprites['image1'] = image
             
@@ -80,6 +83,7 @@ class PyGE:
         gtk.main_quit()
     
     
+    # Updates the drawing area, redrawing the background and sprites
     def drawing_area_expose(self, area, event):
         self.style = self.drawing_area.get_style()
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
