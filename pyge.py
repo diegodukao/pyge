@@ -77,7 +77,7 @@ class PyGE:
             
             # Adding the image to the dictionary that contains all
             # sprites to be drawn
-            image = {'pixmap': pixmap, 'x': 100, 'y': 100}
+            image = {'pixmap': pixmap, 'x': 100, 'y': 100, 'filename': filename}
             self.sprites['image1'] = image
             
             
@@ -156,6 +156,14 @@ class PyGE:
             text += "' height='" + str(self.height) +"'>\n"
             text += "   <background>" + self.background_path
             text += "</background>\n"
+            
+            if self.sprites:
+                for k in self.sprites.keys():
+                    text += "   <sprite x='" + str(self.sprites[k]['x']) + "'"
+                    text += " y='" + str(self.sprites[k]['y']) +"'"
+                    text += " filename='" + self.sprites[k]['filename'] + "'>"
+                    text += k + "</sprite>\n"
+            
             text += "</scene>"
             
             if filename:
