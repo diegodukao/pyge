@@ -10,6 +10,7 @@ class PyGE:
         try:
             builder = gtk.Builder()
             builder.add_from_file("ui_pyge.glade")
+            self.builder = builder
         except:
             self.error_message("Failed to load UI XML file: ui_pyge.glade")
             sys.exit(1)
@@ -25,6 +26,7 @@ class PyGE:
         self.width = None
         self.height = None
         self.sprites = {}
+        self.dialog = None
         
         # connect signals
         builder.connect_signals(self)
@@ -80,6 +82,18 @@ class PyGE:
             image = {'pixmap': pixmap, 'x': 100, 'y': 100, 'filename': filename}
             self.sprites['image1'] = image
             
+            if self.dialog:
+                self.dialog.run()
+            else:
+                self.dialog = self.builder.get_object("dialog")
+                
+                #dialog = gtk.Dialog("Pqp!", self.window, 0,
+                                      #(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                       #gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+                
+                self.dialog.run()
+            
+            self.dialog.hide()
             
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
