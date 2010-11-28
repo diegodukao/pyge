@@ -26,7 +26,7 @@ class PyGE:
         self.width = None
         self.height = None
         self.sprites = {}
-        self.dialog = None
+        self.dialog_sprite_position = None
         
         # connect signals
         builder.connect_signals(self)
@@ -79,21 +79,26 @@ class PyGE:
             
             # Adding the image to the dictionary that contains all
             # sprites to be drawn
-            image = {'pixmap': pixmap, 'x': 100, 'y': 100, 'filename': filename}
+            image = {
+                     'pixmap': pixmap, 
+                     'x': 100,
+                     'y': 100,
+                     'filename': filename
+                    }
             self.sprites['image1'] = image
             
-            if self.dialog:
-                self.dialog.run()
-            else:
-                self.dialog = self.builder.get_object("dialog")
+            if not self.dialog_sprite_position:
+                self.dialog_sprite_position = self.builder.get_object("dialog_sprite_position")
+                self.sprite_x = self.builder.get_object("sprite-x_pos")
+                self.sprite_y = self.builder.get_object("sprite-y_pos")
                 
-                #dialog = gtk.Dialog("Pqp!", self.window, 0,
-                                      #(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                       #gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-                
-                self.dialog.run()
+            response = self.dialog_sprite_position.run()
             
-            self.dialog.hide()
+            if response == gtk.RESPONSE_OK:
+                print self.sprite_x.get_text()
+                print self.sprite_y.get_text()
+            
+            self.dialog_sprite_position.hide()
             
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
