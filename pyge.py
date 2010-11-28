@@ -74,19 +74,6 @@ class PyGE:
         filename = self.get_open_filename()
         
         if filename and self.drawing_area:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-            pixmap, mask = pixbuf.render_pixmap_and_mask()
-            
-            # Adding the image to the dictionary that contains all
-            # sprites to be drawn
-            image = {
-                     'pixmap': pixmap, 
-                     'x': 100,
-                     'y': 100,
-                     'filename': filename
-                    }
-            self.sprites['image1'] = image
-            
             if not self.dialog_sprite_position:
                 self.dialog_sprite_position = self.builder.get_object("dialog_sprite_position")
                 self.sprite_x = self.builder.get_object("sprite-x_pos")
@@ -95,8 +82,24 @@ class PyGE:
             response = self.dialog_sprite_position.run()
             
             if response == gtk.RESPONSE_OK:
-                print self.sprite_x.get_text()
-                print self.sprite_y.get_text()
+                pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+                pixmap, mask = pixbuf.render_pixmap_and_mask()
+                
+                x = int(self.sprite_x.get_text())
+                y = int(self.sprite_y.get_text())
+                
+                # Adding the image to the dictionary that contains all
+                # sprites to be drawn
+                image = {
+                         'pixmap': pixmap, 
+                         'x': x,
+                         'y': y,
+                         'filename': filename
+                        }
+                
+                self.sprites['image1'] = image
+                self.draw_background()
+                self.draw_sprites()
             
             self.dialog_sprite_position.hide()
             
