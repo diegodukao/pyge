@@ -28,6 +28,8 @@ class PyGE:
         self.sprites = {}
         self.dialog_sprite_position = None
         
+        self.sprite_name = self.generator_sprite_name()
+        
         # connect signals
         builder.connect_signals(self)
         
@@ -97,7 +99,7 @@ class PyGE:
                          'filename': filename
                         }
                 
-                self.sprites['image1'] = image
+                self.sprites[self.sprite_name.next()] = image
                 self.draw_background()
                 self.draw_sprites()
             
@@ -219,6 +221,13 @@ class PyGE:
         
         dialog.run()
         dialog.destroy()
+        
+    def generator_sprite_name(self):
+        i = 0
+        
+        while True:
+            i += 1
+            yield "sprite" + str(i)
 
 if __name__ == "__main__":
     pyge = PyGE()
