@@ -77,19 +77,11 @@ class PyGE:
         filename = self.get_open_filename()
         
         if filename and self.drawing_area:
-            if not self.dialog_sprite_position:
-                self.dialog_sprite_position = self.builder.get_object("dialog_sprite_position")
-                self.sprite_x = self.builder.get_object("sprite-x_pos")
-                self.sprite_y = self.builder.get_object("sprite-y_pos")
-                
-            response = self.dialog_sprite_position.run()
+            x, y = self.get_x_y_position()
             
-            if response == gtk.RESPONSE_OK:
+            if x:
                 pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
                 pixmap, mask = pixbuf.render_pixmap_and_mask()
-                
-                x = int(self.sprite_x.get_text())
-                y = int(self.sprite_y.get_text())
                 
                 # Adding the image to the dictionary that contains all
                 # sprites to be drawn
@@ -103,8 +95,6 @@ class PyGE:
                 self.sprites[self.sprite_name.next()] = image
                 self.draw_background()
                 self.draw_sprites()
-            
-            self.dialog_sprite_position.hide()
     
     # Called when the user clicks the 'Change sprite position' menu item.
     def on_sprite_position_menu_item_activate(self, menuitem, data=None):
@@ -120,7 +110,9 @@ class PyGE:
         self.hbox_sprite_select.add(combobox)
         combobox.show()
         
-        self.dialog_sprite_select.run()
+        response = self.dialog_sprite_select.run()
+        
+        #if response = gkt.RESPONSE_OK:
         
         self.dialog_sprite_select.hide()
         combobox.destroy()
@@ -189,6 +181,24 @@ class PyGE:
         chooser.destroy()
         
         return filename
+        
+    def get_x_y_position(self):
+        if not self.dialog_sprite_position:
+            self.dialog_sprite_position = self.builder.get_object("dialog_sprite_position")
+            self.sprite_x = self.builder.get_object("sprite-x_pos")
+            self.sprite_y = self.builder.get_object("sprite-y_pos")
+            
+        response = self.dialog_sprite_position.run()
+        
+        if response == gtk.RESPONSE_OK:
+            x = int(self.sprite_x.get_text())
+            y = int(self.sprite_y.get_text())
+        else:
+            x = None
+            y = None
+        
+        self.dialog_sprite_position.hide()
+        return x, y
     
     # writing the xml file describing the scene
     def write_file(self, filename):
