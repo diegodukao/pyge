@@ -99,8 +99,15 @@ class PyGE:
     # Called when the user clicks the 'Change sprite position' menu item.
     def on_sprite_position_menu_item_activate(self, menuitem, data=None):
         sprite = self.select_sprite()
-        print sprite
         
+        if sprite:
+            x, y = self.get_x_y_position()
+            if x:
+                self.sprites[sprite]['x'] = x
+                self.sprites[sprite]['y'] = y
+                
+                self.draw_background()
+                self.draw_sprites()
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
