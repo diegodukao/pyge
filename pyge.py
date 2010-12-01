@@ -27,6 +27,7 @@ class PyGE:
         self.height = None
         self.sprites = {}
         self.dialog_sprite_position = None
+        self.dialog_sprite_select = None
         
         self.sprite_name = self.generator_sprite_name()
         
@@ -104,7 +105,26 @@ class PyGE:
                 self.draw_sprites()
             
             self.dialog_sprite_position.hide()
-            
+    
+    # Called when the user clicks the 'Change sprite position' menu item.
+    def on_sprite_position_menu_item_activate(self, menuitem, data=None):
+        if not self.dialog_sprite_select:
+            self.dialog_sprite_select = self.builder.get_object("dialog_sprite_select")
+            self.hbox_sprite_select = self.builder.get_object("hbox_sprite_select")
+        
+        combobox = gtk.combo_box_new_text()
+        combobox.append_text("sprite1")
+        combobox.append_text("sprite2")
+        
+        self.hbox_sprite_select.add(combobox)
+        combobox.show()
+        
+        self.dialog_sprite_select.run()
+        
+        self.dialog_sprite_select.hide()
+        combobox.destroy()
+        
+    
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
     
