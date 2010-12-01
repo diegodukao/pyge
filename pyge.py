@@ -8,16 +8,15 @@ class PyGE:
     def __init__(self):
         # using GtkBuilder to build the interface from the glade file
         try:
-            builder = gtk.Builder()
-            builder.add_from_file("ui_pyge.glade")
-            self.builder = builder
+            self.builder = gtk.Builder()
+            self.builder.add_from_file("ui_pyge.glade")
         except:
             self.error_message("Failed to load UI XML file: ui_pyge.glade")
             sys.exit(1)
             
         # get the widgets which will be referenced in callbacks
-        self.window = builder.get_object("window")
-        self.viewport = builder.get_object("viewport")
+        self.window = self.builder.get_object("window")
+        self.viewport = self.builder.get_object("viewport")
         
         # initializing some variables
         self.drawing_area = None
@@ -32,7 +31,7 @@ class PyGE:
         self.sprite_name = self.generator_sprite_name()
         
         # connect signals
-        builder.connect_signals(self)
+        self.builder.connect_signals(self)
         
     def main(self):
         self.window.show()
@@ -108,6 +107,16 @@ class PyGE:
                 
                 self.draw_background()
                 self.draw_sprites()
+    
+    # Called when the user clicks the 'Remove sprite' menu item
+    def on_remove_sprite_menu_item_activate(self, menuitem, data=None):
+        sprite = self.select_sprite()
+        
+        if sprite:
+            self.sprites.pop(sprite)
+            
+            self.draw_background()
+            self.draw_sprites()
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
