@@ -98,24 +98,7 @@ class PyGE:
     
     # Called when the user clicks the 'Change sprite position' menu item.
     def on_sprite_position_menu_item_activate(self, menuitem, data=None):
-        if not self.dialog_sprite_select:
-            self.dialog_sprite_select = self.builder.get_object("dialog_sprite_select")
-            self.hbox_sprite_select = self.builder.get_object("hbox_sprite_select")
-        
-        combobox = gtk.combo_box_new_text()
-        if self.sprites:
-            for k in self.sprites.keys():
-                combobox.append_text(k)
-        
-        self.hbox_sprite_select.add(combobox)
-        combobox.show()
-        
-        response = self.dialog_sprite_select.run()
-        
-        #if response = gkt.RESPONSE_OK:
-        
-        self.dialog_sprite_select.hide()
-        combobox.destroy()
+        self.select_sprite()
         
     
     def on_window_destroy(self, widget, data=None):
@@ -200,6 +183,26 @@ class PyGE:
         self.dialog_sprite_position.hide()
         return x, y
     
+    def select_sprite(self):
+        if not self.dialog_sprite_select:
+            self.dialog_sprite_select = self.builder.get_object("dialog_sprite_select")
+            self.hbox_sprite_select = self.builder.get_object("hbox_sprite_select")
+        
+        combobox = gtk.combo_box_new_text()
+        if self.sprites:
+            for k in self.sprites.keys():
+                combobox.append_text(k)
+        
+        self.hbox_sprite_select.add(combobox)
+        combobox.show()
+        
+        response = self.dialog_sprite_select.run()
+        
+        #if response = gkt.RESPONSE_OK:
+        
+        self.dialog_sprite_select.hide()
+        combobox.destroy()
+        
     # writing the xml file describing the scene
     def write_file(self, filename):
         while gtk.events_pending():
