@@ -98,7 +98,8 @@ class PyGE:
     
     # Called when the user clicks the 'Change sprite position' menu item.
     def on_sprite_position_menu_item_activate(self, menuitem, data=None):
-        self.select_sprite()
+        sprite = self.select_sprite()
+        print sprite
         
     
     def on_window_destroy(self, widget, data=None):
@@ -198,10 +199,23 @@ class PyGE:
         
         response = self.dialog_sprite_select.run()
         
-        #if response = gkt.RESPONSE_OK:
+        if response == gtk.RESPONSE_OK:
+            sprite = self.get_active_text_on_combobox(combobox)
+        else:
+            sprite = None
         
         self.dialog_sprite_select.hide()
         combobox.destroy()
+        
+        return sprite
+        
+    def get_active_text_on_combobox(self, combobox):
+        model = combobox.get_model()
+        active = combobox.get_active()
+        if active < 0:
+            return None
+        return model[active][0]
+
         
     # writing the xml file describing the scene
     def write_file(self, filename):
