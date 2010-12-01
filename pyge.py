@@ -113,8 +113,9 @@ class PyGE:
             self.hbox_sprite_select = self.builder.get_object("hbox_sprite_select")
         
         combobox = gtk.combo_box_new_text()
-        combobox.append_text("sprite1")
-        combobox.append_text("sprite2")
+        if self.sprites:
+            for k in self.sprites.keys():
+                combobox.append_text(k)
         
         self.hbox_sprite_select.add(combobox)
         combobox.show()
