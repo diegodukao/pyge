@@ -34,3 +34,26 @@ class SceneBuilder:
         
         return bg_path
         
+    def get_sprites(self):
+        sprites_nodes = self.scene_xml.getElementsByTagName("sprite")
+        sprites_dict = {}
+        for sprite_node in sprites_nodes:
+            x = int(sprite_node.getAttribute("x"))
+            y = int(sprite_node.getAttribute("y"))
+            image_path = sprite_node.getAttribute("filename")
+            sprite_image = pygame.image.load(image_path)
+            sprite_name = sprite_node.childNodes[0].nodeValue
+            
+            sprite = SimpleSprite((x, y), sprite_image)
+            sprites_dict[sprite_name] = sprite
+        
+        return sprites_dict
+            
+        
+        
+class SimpleSprite(pygame.sprite.Sprite):
+    def __init__(self, position, image):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = position

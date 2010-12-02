@@ -6,7 +6,8 @@ builder = SceneBuilder()
 
 #screen = builder.create_screen()
 
-bg, bg_rect = builder.create_bg()
-print bg
-print bg_rect
+#bg, bg_rect = builder.create_bg()
+
+sprites = builder.get_sprites()
+print sprites
 
