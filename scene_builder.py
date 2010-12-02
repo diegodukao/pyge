@@ -1,15 +1,18 @@
 #! /usr/bin/python
 
 import xml.dom.minidom
+import pygame
 
 class SceneBuilder:
     
     def __init__(self, xml_filename="teste.pyge"):
         self.scene_xml = xml.dom.minidom.parse(xml_filename)
         
+    def create_screen(self):
         width, height = self.get_screen_size()
-        print width
-        print height
+        screen = pygame.display.set_mode((int(width), int(height)))
+        
+        return screen
         
     def get_screen_size(self):
         scene_node = self.scene_xml.getElementsByTagName("scene")
