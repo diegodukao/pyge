@@ -24,8 +24,9 @@ class SceneBuilder:
     def create_bg(self):
         bg_path = self.get_bg_path_from_xml()
         bg = pygame.image.load(bg_path)
+        bg = bg.convert()
         
-        return bg, bg.get_rect
+        return bg, bg.get_rect()
         
         
     def get_bg_path_from_xml(self):

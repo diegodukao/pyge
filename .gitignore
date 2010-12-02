@@ -3,3 +3,5 @@
 *.swp
 geany_run_script.sh
 *.pyge
+*.jpg
+*.png
