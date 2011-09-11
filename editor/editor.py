@@ -4,7 +4,6 @@ import sys
 import gtk
 
 class PyGE:
-    
     def __init__(self):
         # using GtkBuilder to build the interface from the glade file
         try:
@@ -37,14 +36,14 @@ class PyGE:
         self.window.show()
         gtk.main()
     
-    # Called when the user clicks the 'Save' menu item.
+    # Called when the user clicks 'Save' menu item.
     def on_save_menu_item_activate(self, menuitem, data=None):
         if self.filename == None:
             filename = self.get_save_filename()
             if filename:
                 self.write_file(filename)
     
-    # Called when the user clicks the 'Create scene from backgroud' menu item.
+    # Called when the user clicks 'Create scene from background' menu item.
     def on_background_menu_item_activate(self, menuitem, data=None):
         filename = self.get_open_filename()
         

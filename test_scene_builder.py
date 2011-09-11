@@ -7,7 +7,7 @@ from scene_builder import SceneBuilder
 pygame.init()
 
 # Creating the scene with the Scene Builder
-builder = SceneBuilder()
+builder = SceneBuilder("editor/teste2.pyge")
 screen = builder.create_screen()
 bg, bg_rect = builder.create_bg()
 sprites = builder.get_sprites()
