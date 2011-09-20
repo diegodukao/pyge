@@ -24,8 +24,10 @@ class PyGE:
         self.width = None
         self.height = None
         self.sprites = {}
+        self.animated_sprites = {}
         self.dialog_sprite_position = None
         self.dialog_sprite_select = None
+        self.dialog_animated_sprite_frames = None
         
         self.sprite_name = self.generator_sprite_name()
         
@@ -84,11 +86,11 @@ class PyGE:
                 # Adding the image to the dictionary that contains all
                 # sprites to be drawn
                 image = {
-                         'pixmap': pixmap, 
-                         'x': x,
-                         'y': y,
-                         'filename': filename
-                        }
+                    'pixmap': pixmap, 
+                    'x': x,
+                    'y': y,
+                    'filename': filename
+                }
                 
                 self.sprites[self.sprite_name.next()] = image
                 self.draw_background()
@@ -116,6 +118,27 @@ class PyGE:
             
             self.draw_background()
             self.draw_sprites()
+            
+    # Called when the user clicks the 'Animated Sprite' menu item.
+    def on_animated_sprite_menu_item_activate(self, menuitem, data=None):
+        filename = self.get_open_filename()
+        
+        if filename and self.drawing_area:
+            frames_x, frames_y = self.get_frames_x_frames_y_quantity()
+            
+            if frames_x or frames_y:
+                
+                # Adding the animated image to the dictionary that
+                # contains all animated sprites to be drawn
+                animated_image = {
+                    "frames_x": frames_x,
+                    "frames_y": frames_y,
+                    "filename": filename,
+                }
+                
+                self.animated_sprites["animated_sprite1"] = animated_image
+                
+                print self.animated_sprites
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
@@ -230,6 +253,25 @@ class PyGE:
         if active < 0:
             return None
         return model[active][0]
+    
+    # Open the dialog box used to get the number of frames in x and y
+    def get_frames_x_frames_y_quantity(self):
+        if not self.dialog_animated_sprite_frames:
+            self.dialog_animated_sprite_frames = self.builder.get_object("dialog_animated_sprite_frames")
+            self.frames_x = self.builder.get_object("input_frames_x")
+            self.frames_y = self.builder.get_object("input_frames_y")
+            
+        response = self.dialog_animated_sprite_frames.run()
+        
+        if response == gtk.RESPONSE_OK:
+            frames_x_qty = int(self.frames_x.get_text())
+            frames_y_qty = int(self.frames_y.get_text())
+        else:
+            frames_x_qty = None
+            frames_y_qty = None
+        
+        self.dialog_animated_sprite_frames.hide()
+        return frames_x_qty, frames_y_qty
 
         
     # writing the xml file describing the scene
