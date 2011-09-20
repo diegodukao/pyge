@@ -137,8 +137,6 @@ class PyGE:
                 }
                 
                 self.animated_sprites["animated_sprite1"] = animated_image
-                
-                print self.animated_sprites
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
@@ -292,6 +290,13 @@ class PyGE:
                     text += " y='" + str(self.sprites[k]['y']) +"'"
                     text += " filename='" + self.sprites[k]['filename'] + "'>"
                     text += k + "</sprite>\n"
+                    
+            if self.animated_sprites:
+                for k in self.animated_sprites.keys():
+                    text += "   <animated_sprite frames_x='" + str(self.animated_sprites[k]['frames_x']) + "'"
+                    text += " frames_y='" + str(self.animated_sprites[k]['frames_y']) +"'"
+                    text += " filename='" + self.animated_sprites[k]['filename'] + "'>"
+                    text += k + "</animated_sprite>\n"
             
             text += "</scene>"
             
