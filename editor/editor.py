@@ -124,13 +124,14 @@ class PyGE:
         filename = self.get_open_filename()
         
         if filename and self.drawing_area:
-            frames_x, frames_y = self.get_frames_x_frames_y_quantity()
+            x, y, frames_x, frames_y = self.get_sprite_data()
             
-            if frames_x or frames_y:
-                
+            if x:
                 # Adding the animated image to the dictionary that
                 # contains all animated sprites to be drawn
                 animated_image = {
+                    "x": x,
+                    "y": y,
                     "frames_x": frames_x,
                     "frames_y": frames_y,
                     "filename": filename,
@@ -253,23 +254,29 @@ class PyGE:
         return model[active][0]
     
     # Open the dialog box used to get the number of frames in x and y
-    def get_frames_x_frames_y_quantity(self):
+    def get_sprite_data(self):
         if not self.dialog_animated_sprite_frames:
             self.dialog_animated_sprite_frames = self.builder.get_object("dialog_animated_sprite_frames")
+            self.x = self.builder.get_object("input_pos_x")
+            self.y = self.builder.get_object("input_pos_y")
             self.frames_x = self.builder.get_object("input_frames_x")
             self.frames_y = self.builder.get_object("input_frames_y")
             
         response = self.dialog_animated_sprite_frames.run()
         
         if response == gtk.RESPONSE_OK:
+            pos_x = int(self.x.get_text())
+            pos_y = int(self.y.get_text())
             frames_x_qty = int(self.frames_x.get_text())
             frames_y_qty = int(self.frames_y.get_text())
         else:
+            pos_x = None
+            pos_y = None
             frames_x_qty = None
             frames_y_qty = None
         
         self.dialog_animated_sprite_frames.hide()
-        return frames_x_qty, frames_y_qty
+        return pos_x, pos_y, frames_x_qty, frames_y_qty
 
         
     # writing the xml file describing the scene
@@ -293,7 +300,9 @@ class PyGE:
                     
             if self.animated_sprites:
                 for k in self.animated_sprites.keys():
-                    text += "   <animated_sprite frames_x='" + str(self.animated_sprites[k]['frames_x']) + "'"
+                    text += "   <animated_sprite x='" + str(self.animated_sprites[k]['x']) + "'"
+                    text += " y='" + str(self.animated_sprites[k]['y']) +"'"
+                    text += " frames_x='" + str(self.animated_sprites[k]['frames_x']) + "'"
                     text += " frames_y='" + str(self.animated_sprites[k]['frames_y']) +"'"
                     text += " filename='" + self.animated_sprites[k]['filename'] + "'>"
                     text += k + "</animated_sprite>\n"
