@@ -28,6 +28,7 @@ class PyGE:
         self.dialog_sprite_position = None
         self.dialog_sprite_select = None
         self.dialog_animated_sprite_frames = None
+        self.dialog_create_animation = None
         
         self.sprite_name = self.generator_sprite_name()
         
@@ -143,6 +144,8 @@ class PyGE:
     def on_animation_menu_item_activate(self, menuitem, data=None):
         sprite = self.select_sprite()
         
+        if sprite:
+            animation_name, frames = self.get_animation_data()
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
@@ -258,7 +261,8 @@ class PyGE:
             return None
         return model[active][0]
     
-    # Open the dialog box used to get the number of frames in x and y
+    # Open the dialog box used to get the position and number of frames
+    # in x and y
     def get_sprite_data(self):
         if not self.dialog_animated_sprite_frames:
             self.dialog_animated_sprite_frames = self.builder.get_object("dialog_animated_sprite_frames")
@@ -282,7 +286,26 @@ class PyGE:
         
         self.dialog_animated_sprite_frames.hide()
         return pos_x, pos_y, frames_x_qty, frames_y_qty
-
+    
+    # open dialog that gets information to create an animation
+    def get_animation_data(self):
+        if not self.dialog_create_animation:
+            self.dialog_create_animation = self.builder.get_object("dialog_create_animation")
+            self.animation_name = self.builder.get_object("input_animation_name")
+            self.animation_frames = self.builder.get_object("input_animation_frames")
+            
+        response = self.dialog_create_animation.run()
+        
+        if response == gtk.RESPONSE_OK:
+            name = self.animation_name.get_text()
+            frames = self.animation_frames.get_text()
+        else:
+            name = None
+            frames = None
+            
+        self.dialog_create_animation.hide()
+        return name, frames
+        
         
     # writing the xml file describing the scene
     def write_file(self, filename):

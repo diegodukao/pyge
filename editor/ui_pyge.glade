@@ -16,7 +16,7 @@
   <object class="GtkDialog" id="dialog_animated_sprite_frames">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox5">
         <property name="visible">True</property>
@@ -300,7 +300,7 @@
   <object class="GtkDialog" id="dialog_sprite_position">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -417,7 +417,7 @@
   <object class="GtkDialog" id="dialog_sprite_select">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox3">
         <property name="visible">True</property>
