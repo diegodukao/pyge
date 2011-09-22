@@ -136,6 +136,7 @@ class PyGE:
                     "frames_x": frames_x,
                     "frames_y": frames_y,
                     "filename": filename,
+                    "animations": {},
                 }
                 
                 self.animated_sprites[self.sprite_name.next()] = animated_image
@@ -146,8 +147,9 @@ class PyGE:
         
         if sprite:
             animation_name, frames = self.get_animation_data()
-            print animation_name
-            print frames
+            
+            if animation_name and frames:
+                self.animated_sprites[sprite]["animations"][animation_name] = frames
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
