@@ -139,6 +139,11 @@ class PyGE:
                 
                 self.animated_sprites["animated_sprite1"] = animated_image
     
+    # Called when the user clicks the 'Animation' menu item.
+    def on_animation_menu_item_activate(self, menuitem, data=None):
+        sprite = self.select_sprite()
+        
+    
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
     
