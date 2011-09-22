@@ -138,14 +138,16 @@ class PyGE:
                     "filename": filename,
                 }
                 
-                self.animated_sprites["animated_sprite1"] = animated_image
+                self.animated_sprites[self.sprite_name.next()] = animated_image
     
     # Called when the user clicks the 'Animation' menu item.
     def on_animation_menu_item_activate(self, menuitem, data=None):
-        sprite = self.select_sprite()
+        sprite = self.select_sprite("animated")
         
         if sprite:
             animation_name, frames = self.get_animation_data()
+            print animation_name
+            print frames
     
     def on_window_destroy(self, widget, data=None):
         gtk.main_quit()
@@ -229,15 +231,21 @@ class PyGE:
         self.dialog_sprite_position.hide()
         return x, y
     
-    def select_sprite(self):
+    def select_sprite(self, type_of_sprite="static"):
         if not self.dialog_sprite_select:
             self.dialog_sprite_select = self.builder.get_object("dialog_sprite_select")
             self.hbox_sprite_select = self.builder.get_object("hbox_sprite_select")
         
         combobox = gtk.combo_box_new_text()
-        if self.sprites:
-            for k in self.sprites.keys():
-                combobox.append_text(k)
+        
+        if type_of_sprite == "static":
+            if self.sprites:
+                for k in self.sprites.keys():
+                    combobox.append_text(k)
+        else: # type_of_sprite == "animated"
+            if self.animated_sprites:
+                for k in self.animated_sprites.keys():
+                    combobox.append_text(k)
         
         self.hbox_sprite_select.add(combobox)
         combobox.show()
