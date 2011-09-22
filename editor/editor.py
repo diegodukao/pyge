@@ -341,9 +341,16 @@ class PyGE:
                     text += "   <animated_sprite x='" + str(self.animated_sprites[k]['x']) + "'"
                     text += " y='" + str(self.animated_sprites[k]['y']) +"'"
                     text += " frames_x='" + str(self.animated_sprites[k]['frames_x']) + "'"
-                    text += " frames_y='" + str(self.animated_sprites[k]['frames_y']) +"'"
-                    text += " filename='" + self.animated_sprites[k]['filename'] + "'>"
-                    text += k + "</animated_sprite>\n"
+                    text += " frames_y='" + str(self.animated_sprites[k]['frames_y']) + "'"
+                    text += " filename='" + self.animated_sprites[k]['filename'] + "'"
+                    text += " name='" + k + "'>\n"
+                    
+                    for animation in self.animated_sprites[k]["animations"].keys():
+                        text += "       "
+                        text += "<animation name='" + animation + "'"
+                        text += " frames='" + self.animated_sprites[k]["animations"][animation] + "' />\n"
+                        
+                    text += "   </animated_sprite>\n"
             
             text += "</scene>"
             
