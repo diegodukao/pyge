@@ -25,6 +25,10 @@ while True:
     # Drawing the sprites
     for sprite in sprites.itervalues():
          screen.blit(sprite.image, sprite.rect)
+         
+    for animated_sprite in animated_sprites.itervalues():
+        animated_sprite.update()
+        screen.blit(animated_sprite.image, animated_sprite.rect)
     
     # Updating the screen
     pygame.display.flip()

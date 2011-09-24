@@ -2,7 +2,7 @@
 
 import xml.dom.minidom
 import pygame
-from animated_sprite import AnimatedSprite, Animation
+from animated_sprite import AnimatedSprite
 
 class SceneBuilder:
     
