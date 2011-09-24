@@ -125,7 +125,7 @@ class PyGE:
         filename = self.get_open_filename()
         
         if filename and self.drawing_area:
-            x, y, frames_x, frames_y = self.get_sprite_data()
+            x, y, lines, columns = self.get_sprite_data()
             
             if x:
                 # Adding the animated image to the dictionary that
@@ -133,8 +133,8 @@ class PyGE:
                 animated_image = {
                     "x": x,
                     "y": y,
-                    "frames_x": frames_x,
-                    "frames_y": frames_y,
+                    "lines": lines,
+                    "columns": columns,
                     "filename": filename,
                     "animations": {},
                 }
@@ -278,24 +278,24 @@ class PyGE:
             self.dialog_animated_sprite_frames = self.builder.get_object("dialog_animated_sprite_frames")
             self.x = self.builder.get_object("input_pos_x")
             self.y = self.builder.get_object("input_pos_y")
-            self.frames_x = self.builder.get_object("input_frames_x")
-            self.frames_y = self.builder.get_object("input_frames_y")
+            self.lines = self.builder.get_object("input_lines")
+            self.columns = self.builder.get_object("input_columns")
             
         response = self.dialog_animated_sprite_frames.run()
         
         if response == gtk.RESPONSE_OK:
             pos_x = int(self.x.get_text())
             pos_y = int(self.y.get_text())
-            frames_x_qty = int(self.frames_x.get_text())
-            frames_y_qty = int(self.frames_y.get_text())
+            lines_qty = int(self.lines.get_text())
+            columns_qty = int(self.columns.get_text())
         else:
             pos_x = None
             pos_y = None
-            frames_x_qty = None
-            frames_y_qty = None
+            lines_qty = None
+            columns_qty = None
         
         self.dialog_animated_sprite_frames.hide()
-        return pos_x, pos_y, frames_x_qty, frames_y_qty
+        return pos_x, pos_y, lines_qty, columns_qty
     
     # open dialog that gets information to create an animation
     def get_animation_data(self):
@@ -340,8 +340,8 @@ class PyGE:
                 for k in self.animated_sprites.keys():
                     text += "   <animated_sprite x='" + str(self.animated_sprites[k]['x']) + "'"
                     text += " y='" + str(self.animated_sprites[k]['y']) +"'"
-                    text += " frames_x='" + str(self.animated_sprites[k]['frames_x']) + "'"
-                    text += " frames_y='" + str(self.animated_sprites[k]['frames_y']) + "'"
+                    text += " lines='" + str(self.animated_sprites[k]['lines']) + "'"
+                    text += " columns='" + str(self.animated_sprites[k]['columns']) + "'"
                     text += " filename='" + self.animated_sprites[k]['filename'] + "'"
                     text += " name='" + k + "'>\n"
                     

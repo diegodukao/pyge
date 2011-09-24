@@ -73,10 +73,10 @@
             <property name="n_rows">4</property>
             <property name="n_columns">2</property>
             <child>
-              <object class="GtkLabel" id="label_frames_x">
+              <object class="GtkLabel" id="label_lines">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Frames x</property>
+                <property name="label" translatable="yes">Lines</property>
               </object>
               <packing>
                 <property name="top_attach">2</property>
@@ -84,10 +84,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_frames_y">
+              <object class="GtkLabel" id="label_columns">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Frames y</property>
+                <property name="label" translatable="yes">Columns</property>
               </object>
               <packing>
                 <property name="top_attach">3</property>
@@ -95,7 +95,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input_frames_x">
+              <object class="GtkEntry" id="input_lines">
                 <property name="width_request">6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -110,7 +110,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input_frames_y">
+              <object class="GtkEntry" id="input_columns">
                 <property name="width_request">5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

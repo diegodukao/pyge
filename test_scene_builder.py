@@ -7,10 +7,11 @@ from scene_builder import SceneBuilder
 pygame.init()
 
 # Creating the scene with the Scene Builder
-builder = SceneBuilder("editor/teste2.pyge")
+builder = SceneBuilder("editor/teste6.pyge")
 screen = builder.create_screen()
 bg, bg_rect = builder.create_bg()
 sprites = builder.get_sprites()
+animated_sprites = builder.get_animated_sprites()
 
 # Main loop
 while True:

@@ -2,6 +2,7 @@
 
 import xml.dom.minidom
 import pygame
+from animated_sprite import AnimatedSprite, Animation
 
 class SceneBuilder:
     
@@ -28,7 +29,6 @@ class SceneBuilder:
         
         return bg, bg.get_rect()
         
-        
     def get_bg_path_from_xml(self):
         bg_node = self.scene_xml.getElementsByTagName("background")
         bg_path = bg_node[0].childNodes[0].nodeValue
@@ -50,7 +50,28 @@ class SceneBuilder:
         
         return sprites_dict
             
-        
+    def get_animated_sprites(self):
+        anim_sprites_nodes = self.scene_xml.getElementsByTagName("animated_sprite")
+        anim_sprites_dict = {}
+        for anim_sprite_node in anim_sprites_nodes:
+            x = int(anim_sprite_node.getAttribute("x"))
+            y = int(anim_sprite_node.getAttribute("y"))
+            lines = int(anim_sprite_node.getAttribute("lines"))
+            columns = int(anim_sprite_node.getAttribute("columns"))
+            image_path = anim_sprite_node.getAttribute("filename")
+            anim_sprite_image = pygame.image.load(image_path)
+            anim_sprite_image = anim_sprite_image.convert()
+            anim_sprite_name = anim_sprite_node.getAttribute("name")
+            
+            animated_sprite = AnimatedSprite(
+                [x, y],
+                anim_sprite_image,
+                lines,
+                columns,
+            )
+            anim_sprites_dict[anim_sprite_name] = animated_sprite
+            
+        return anim_sprites_dict
         
 class SimpleSprite(pygame.sprite.Sprite):
     def __init__(self, position, image):
