@@ -12,6 +12,7 @@ screen = builder.create_screen()
 bg, bg_rect = builder.create_bg()
 sprites = builder.get_sprites()
 animated_sprites = builder.get_animated_sprites()
+animated_sprites["sprite1"].set_animation("idle")
 
 # Main loop
 while True:

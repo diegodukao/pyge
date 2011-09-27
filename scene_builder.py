@@ -69,6 +69,16 @@ class SceneBuilder:
                 lines,
                 columns,
             )
+            
+            #getting the animations
+            animations_nodes = anim_sprite_node.getElementsByTagName("animation")
+            for animation_node in animations_nodes:
+                name = animation_node.getAttribute("name")
+                frames_str = animation_node.getAttribute("frames")
+                frames_sequence = [int(n) for n in frames_str.split(',')]
+                
+                animated_sprite.create_animation(name, frames_sequence)
+            
             anim_sprites_dict[anim_sprite_name] = animated_sprite
             
         return anim_sprites_dict

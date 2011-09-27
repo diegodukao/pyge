@@ -12,6 +12,7 @@ class AnimatedSprite(sprite.Sprite):
         self.frames = self.get_frames(image_frames, lines, columns)
         
         self.animation = Animation(xrange(len(self.frames)))
+        self.animations = {}
         
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
@@ -61,8 +62,8 @@ class AnimatedSprite(sprite.Sprite):
         
         self.image = self.frames[self.animation.frames[self.current_frame]]
         
-    def create_animation(self, animation_order):
-        return Animation(animation_order)
+    def create_animation(self, name, animation_order):
+        self.animations[name] = Animation(animation_order)
         
-    def set_animation(self, animation):
-        self.animation = animation
+    def set_animation(self, animation_name):
+        self.animation = self.animations[animation_name]
