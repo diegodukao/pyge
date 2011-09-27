@@ -79,6 +79,11 @@ class SceneBuilder:
                 
                 animated_sprite.create_animation(name, frames_sequence)
             
+            #if there's an idle animations, set it to be the default
+            #animation
+            if "idle" in animated_sprite.animations:
+                animated_sprite.set_animation("idle")
+            
             anim_sprites_dict[anim_sprite_name] = animated_sprite
             
         return anim_sprites_dict
