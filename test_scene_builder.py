@@ -28,6 +28,7 @@ while True:
          
     for animated_sprite in animated_sprites.itervalues():
         animated_sprite.update()
+        animated_sprite.check_colision(sprites["platform"])
         screen.blit(animated_sprite.image, animated_sprite.rect)
     
     # Updating the screen

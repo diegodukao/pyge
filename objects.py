@@ -23,3 +23,6 @@ class Actor(AnimatedSprite):
         super(Actor, self).update()
         self.rect.move_ip(0, self.jump_speed)
 
+    def check_colision(self, obj):
+        if pygame.sprite.collide_rect(self, obj):
+            self.jump_speed = 0
