@@ -3,6 +3,7 @@
 import xml.dom.minidom
 import pygame
 from animated_sprite import AnimatedSprite
+from objects import Actor
 
 class SceneBuilder:
     
@@ -63,7 +64,7 @@ class SceneBuilder:
             anim_sprite_image = anim_sprite_image.convert()
             anim_sprite_name = anim_sprite_node.getAttribute("name")
             
-            animated_sprite = AnimatedSprite(
+            animated_sprite = Actor(
                 [x, y],
                 anim_sprite_image,
                 lines,
