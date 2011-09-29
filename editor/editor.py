@@ -2,6 +2,8 @@
 
 import sys
 import gtk
+import Image
+import tools
 
 class PyGE:
     def __init__(self):
@@ -128,6 +130,23 @@ class PyGE:
             x, y, lines, columns = self.get_sprite_data()
             
             if x:
+                image_frames = Image.open(filename)
+                frame_pixbuf = tools.get_frame_pixbuf(image_frames, (0,0,101,101))
+                pixmap, mask = frame_pixbuf.render_pixmap_and_mask()
+                
+                name = self.sprite_name.next()
+                
+                image = {
+                    'pixmap': pixmap, 
+                    'x': x,
+                    'y': y,
+                    'filename': filename,
+                }
+                
+                self.sprites[name] = image
+                self.draw_background()
+                self.draw_sprites()
+                
                 # Adding the animated image to the dictionary that
                 # contains all animated sprites to be drawn
                 animated_image = {
@@ -139,7 +158,7 @@ class PyGE:
                     "animations": {},
                 }
                 
-                self.animated_sprites[self.sprite_name.next()] = animated_image
+                self.animated_sprites[name] = animated_image
     
     # Called when the user clicks the 'Animation' menu item.
     def on_animation_menu_item_activate(self, menuitem, data=None):
@@ -172,13 +191,16 @@ class PyGE:
     def draw_sprites(self):
         if self.sprites:
             for k in self.sprites.keys():
-                self.draw_to_drawing_area(self.sprites[k]['pixmap'],
-                                          self.sprites[k]['x'],
-                                          self.sprites[k]['y'])
+                self.draw_to_drawing_area(
+                    self.sprites[k]['pixmap'],
+                    self.sprites[k]['x'],
+                    self.sprites[k]['y']
+                )
     
     def draw_to_drawing_area(self, pixmap, x, y):
-        self.drawing_area.window.draw_drawable(self.gc, pixmap,
-                                               0, 0, x, y, -1, -1)
+        self.drawing_area.window.draw_drawable(
+            self.gc, pixmap, 0, 0, x, y, -1, -1,
+        )
     
     # We call get_open_filename() when we want to get a filename to open from the
     # user. It will present the user with a file chooser dialog and return the 
