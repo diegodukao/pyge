@@ -2,8 +2,7 @@
 
 import sys
 import gtk
-import Image
-import tools
+from animated_sprite import AnimatedSprite
 
 class PyGE:
     def __init__(self):
@@ -130,17 +129,18 @@ class PyGE:
             x, y, lines, columns = self.get_sprite_data()
             
             if x:
-                image_frames = Image.open(filename)
-                frame_pixbuf = tools.get_frame_pixbuf(image_frames, (0,0,101,101))
-                pixmap, mask = frame_pixbuf.render_pixmap_and_mask()
+                #frame_pixbuf = tools.get_frame_pixbuf(image_frames, (0,0,101,101))
+                #pixmap, mask = frame_pixbuf.render_pixmap_and_mask()
+                
+                image = AnimatedSprite(filename, x, y, lines, columns)
                 
                 name = self.sprite_name.next()
                 
                 image = {
-                    'pixmap': pixmap, 
-                    'x': x,
-                    'y': y,
-                    'filename': filename,
+                    'pixmap': image.pixmap, 
+                    'x': image.x,
+                    'y': image.y,
+                    'filename': image.filename,
                 }
                 
                 self.sprites[name] = image
