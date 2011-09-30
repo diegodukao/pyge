@@ -26,6 +26,7 @@ class PyGE:
         self.height = None
         self.sprites = {}
         self.animated_sprites = {}
+        self.animated_sprites_draw = {}
         self.dialog_sprite_position = None
         self.dialog_sprite_select = None
         self.dialog_animated_sprite_frames = None
@@ -132,18 +133,10 @@ class PyGE:
                 #frame_pixbuf = tools.get_frame_pixbuf(image_frames, (0,0,101,101))
                 #pixmap, mask = frame_pixbuf.render_pixmap_and_mask()
                 
-                image = AnimatedSprite(filename, x, y, lines, columns)
-                
+                animated_sprite = AnimatedSprite(filename, x, y, lines, columns)                
                 name = self.sprite_name.next()
+                self.animated_sprites_draw[name] = animated_sprite
                 
-                image = {
-                    'pixmap': image.pixmap, 
-                    'x': image.x,
-                    'y': image.y,
-                    'filename': image.filename,
-                }
-                
-                self.sprites[name] = image
                 self.draw_background()
                 self.draw_sprites()
                 
@@ -195,6 +188,13 @@ class PyGE:
                     self.sprites[k]['pixmap'],
                     self.sprites[k]['x'],
                     self.sprites[k]['y']
+                )
+        if self.animated_sprites_draw:
+            for k, animated_sprite in self.animated_sprites_draw.items():
+                self.draw_to_drawing_area(
+                    animated_sprite.frame_pixmap,
+                    animated_sprite.x,
+                    animated_sprite.y,
                 )
     
     def draw_to_drawing_area(self, pixmap, x, y):

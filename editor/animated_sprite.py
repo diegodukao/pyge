@@ -14,7 +14,7 @@ class AnimatedSprite:
         #self.frames_pixmap, self.frames_mask = [frame_pixbuf.render_pixmap_and_mask() for frame_pixbuf in frames_pixbuf]
         #frame_pixbuf = tools.get_frame_pixbuf(image_frames, (0,0,101,101))
         #self.pixmap, self.mask = frame_pixbuf.render_pixmap_and_mask()
-        self.pixmap, self.mask = frames_pixbuf[0].render_pixmap_and_mask()
+        self.frame_pixmap, self.frame_mask = frames_pixbuf[0].render_pixmap_and_mask()
         
     def get_frames(self, image, lines, columns):        
         frames = []
